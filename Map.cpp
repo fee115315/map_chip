@@ -47,7 +47,9 @@ Map::Map() :
 	m_graphWidth(0),
 	m_graphHeight(0),
 	m_cursorNo(0),
-	m_mapData(kBgNumX* kBgNumY,0)
+	m_mapData(kBgNumX* kBgNumY, 0),
+	m_scrollX(0),
+	m_scrollY(0)
 {
 }
 
@@ -100,7 +102,7 @@ void Map::updata()
 		//outputData();
 		readData();
 	}
-	if (Pad::isTrigger(PAD_INPUT_UP))
+	/*if (Pad::isTrigger(PAD_INPUT_UP))
 	{
 		if (indexY> 0)
 		{
@@ -127,11 +129,49 @@ void Map::updata()
 		{
 			m_cursorNo++;
 		}
+	}*/
+	if (Pad::isPress(PAD_INPUT_UP))
+	{
+
+		m_scrollY++;
+	}
+	if (Pad::isPress(PAD_INPUT_DOWN))
+	{
+
+		m_scrollY--;
+
+	}
+	if (Pad::isPress(PAD_INPUT_LEFT))
+	{
+
+		m_scrollX++;
+
+	}
+	if (Pad::isPress(PAD_INPUT_RIGHT))
+	{
+
+		m_scrollX--;
+
 	}
 }
 
+
+
 void Map::draw()
 {
+	//m_scrollX>0  右ずれ 
+	//m_scrollX<0　左ずれ
+	//m_scrollY>0　下ずれ
+	//m_scrollY<0　上ずれ
+
+	int indexX = 0;
+	int indexY = 0;
+
+	indexX = -(m_scrollX / kChipSize);
+	while (indexX < 0) indexX += kBgNumX;
+	indexY = -(m_scrollY / kChipSize);
+	while (indexY < 0) indexY += kBgNumX;
+
 	for (int x = 0; x < kBgNumX; x++)
 	{
 		for (int y = 0; y < kBgNumY; y++)
